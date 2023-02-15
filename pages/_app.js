@@ -1,5 +1,27 @@
-import '@/styles/globals.css'
+import Router from "next/router";
+import { Poppins } from "@next/font/google";
+import ProgressBar from "@badrap/bar-of-progress";
+import "@/styles/globals.css";
+import Layout from "../components/Layout/layout";
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+const poppins = Poppins({ subsets: ["latin"], weight: "400" });
+const progress = new ProgressBar({
+  size: 4,
+  color: "#a3a3a3",
+  className: "z-50",
+  delay: 100,
+});
+
+Router.events.on("routeChangeStart", progress.start);
+Router.events.on("routeChangeComplete", progress.finish);
+Router.events.on("routeChangeError", progress.finish);
+
+export default function MyApp({ Component, pageProps }) {
+  return (
+    <main className={poppins.className}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </main>
+  );
 }
