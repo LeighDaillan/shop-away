@@ -14,7 +14,7 @@ const Navbar = function () {
   return (
     <header>
       <div className="bg-neutral-900 p-2">
-        <p className="text-white opacity-80">
+        <p className="text-white text-sm opacity-90">
           Caution: Nothing on this website is for sale. It is only for
           educational purposes.
         </p>
