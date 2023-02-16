@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { useState, useContext } from "react";
+import { ProductContext } from "@/components/ProductContextProvider";
 
 const Product = function ({ product }) {
-  console.log(product);
-  const { data: session } = useSession();
+  const [qty, setQty] = useState(1);
+  const { session, addToCart } = useContext(ProductContext);
 
   const ratings = function (rating) {
     let rate = [];
@@ -14,8 +15,14 @@ const Product = function ({ product }) {
     return rate;
   };
 
+  const addToCartWithQty = function (data) {
+    const dataWithQty = { ...data, qty };
+    console.log(dataWithQty);
+    return addToCart(dataWithQty);
+  };
+
   return (
-    <main className="h-screen grid grid-cols-2  gap-5 mx-32  my-10 p-10">
+    <main className=" grid md:grid-cols-2  gap-5 lg:mx-32  my-10 p-10">
       <section className=" text-center">
         <div className="p-7 border-2  rounded-md">
           <Image
@@ -23,7 +30,7 @@ const Product = function ({ product }) {
             width={300}
             height={300}
             alt="Product Photo"
-            className="mx-auto"
+            className="mx-auto  overflow-auto"
           />
         </div>
         <p className="my-5 font-semibold">{product.description}.</p>
@@ -42,9 +49,18 @@ const Product = function ({ product }) {
         </h2>
         <div className="my-5">
           <h3 className="text-lg">Quantity</h3>
-          <input className="border-2 w-20 px-2 py-1" type="number" />
+          <input
+            value={qty}
+            onChange={(e) => setQty(e.target.value)}
+            className="border-2 w-20 px-2 py-1"
+            type="number"
+            min="1"
+          />
         </div>
-        <button className="border-black border-2 py-3 rounded-md hover:bg-black hover:text-white ease-in duration-200 w-full">
+        <button
+          onClick={() => addToCartWithQty(product)}
+          className="border-black border-2 py-3 rounded-md hover:bg-black hover:text-white ease-in duration-200 w-full"
+        >
           {session ? "Add to cart" : "Log in to continue"}
         </button>
         <h2></h2>
