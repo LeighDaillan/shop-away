@@ -1,10 +1,9 @@
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useContext } from "react";
+import { ProductContext } from "./ProductContextProvider";
 
 const ProductCard = function ({ products }) {
-  const { data: session } = useSession();
-
   const ratings = function (rating) {
     let rate = [];
     const singleRate = rating[0];
@@ -13,6 +12,8 @@ const ProductCard = function ({ products }) {
     }
     return rate;
   };
+
+  const { cartNumber, session, addToCart } = useContext(ProductContext);
 
   return (
     <>
@@ -43,7 +44,10 @@ const ProductCard = function ({ products }) {
               </h5>
               <h6>$ {data.price}</h6>
               <div>
-                <button className="border-black border-2 px-3 py-1 rounded-md hover:bg-black hover:text-white ease-in duration-200 ">
+                <button
+                  onClick={() => addToCart(data)}
+                  className="border-black border-2 px-3 py-1 rounded-md hover:bg-black hover:text-white ease-in duration-200 "
+                >
                   {session ? "Add to cart" : "Log in to continue"}
                 </button>
               </div>
