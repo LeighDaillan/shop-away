@@ -1,0 +1,70 @@
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+
+const Product = function ({ product }) {
+  console.log(product);
+  const { data: session } = useSession();
+
+  const ratings = function (rating) {
+    let rate = [];
+    const singleRate = rating[0];
+    for (let i = 1; i <= singleRate; i++) {
+      rate.push("★");
+    }
+    return rate;
+  };
+
+  return (
+    <main className="h-screen grid grid-cols-2  gap-5 mx-32  my-10 p-10">
+      <section className=" text-center">
+        <div className="p-7 border-2  rounded-md">
+          <Image
+            src={product.image}
+            width={300}
+            height={300}
+            alt="Product Photo"
+            className="mx-auto"
+          />
+        </div>
+        <p className="my-5 font-semibold">{product.description}.</p>
+      </section>
+
+      <section className="bg-white p-9">
+        <p className="text-right italic opacity-80 mb-4">
+          {product.category.toUpperCase()}
+        </p>
+        <h1 className="text-3xl">{product.title}</h1>
+        <h2 className="my-2">ID: {product.id}</h2>
+        <h2 className="my-3 text-xl font-bold">$ {product.price}</h2>
+        <h2 className="mb-5 text-base">
+          Reviews ({product.rating.count}){" "}
+          {ratings(product.rating.rate.toString())}
+        </h2>
+        <div className="my-5">
+          <h3 className="text-lg">Quantity</h3>
+          <input className="border-2 w-20 px-2 py-1" type="number" />
+        </div>
+        <button className="border-black border-2 py-3 rounded-md hover:bg-black hover:text-white ease-in duration-200 w-full">
+          {session ? "Add to cart" : "Log in to continue"}
+        </button>
+        <h2></h2>
+      </section>
+    </main>
+  );
+};
+
+export default Product;
+
+export async function getServerSideProps(context) {
+  const { params } = context;
+  const { id } = params;
+
+  const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+  const product = await res.json();
+
+  return {
+    props: {
+      product,
+    },
+  };
+}

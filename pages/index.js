@@ -1,11 +1,46 @@
 import ProductCard from "@/components/ProductCard";
+import { useSession } from "next-auth/react";
+import { RxCross2 } from "react-icons/rx";
+import { useInView } from "react-intersection-observer";
+import { useEffect, useState } from "react";
 
 const Home = function ({ products }) {
+  const { ref: welcomeRef, inView: welcomeVisible } = useInView();
+  const { data: session } = useSession();
+  const [welcomeStatus, setWelcomeStatus] = useState();
+  useEffect(() => {
+    if (!session) {
+      setWelcomeStatus(true);
+    }
+  }, [session]);
+
   return (
-    <main className=" h-auto  my-10">
+    <main className=" relative h-auto  my-10">
+      {/* Welcome Banner */}
+      {session && welcomeStatus && (
+        <div
+          ref={welcomeRef}
+          className={`fixed text-sm bg-black rounded-l-sm bottom-10 right-0 text-white px-4 py-3 ${
+            welcomeVisible
+              ? "showAnimation ease-in duration-500"
+              : "hideAnimation blur"
+          }`}
+        >
+          <div className="flex gap-3">
+            <RxCross2
+              onClick={() => setWelcomeStatus(!welcomeStatus)}
+              className="self-center cursor-pointer"
+              size={25}
+            />
+            <p>
+              Hi {session.user.name}! <br /> Welcome Back to Arcane.
+            </p>
+          </div>
+        </div>
+      )}
       <section className="mx-10 md:mx-20 my-14 md:my-32">
         {/* Grid of Cards */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-20 p-5">
+        <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-20 p-5 `}>
           {/* cards */}
           <ProductCard products={products} />
         </div>

@@ -1,6 +1,7 @@
 import Router from "next/router";
 import { Poppins } from "@next/font/google";
 import ProgressBar from "@badrap/bar-of-progress";
+import { SessionProvider } from "next-auth/react";
 import "@/styles/globals.css";
 import Layout from "../components/Layout/layout";
 
@@ -16,12 +17,17 @@ Router.events.on("routeChangeStart", progress.start);
 Router.events.on("routeChangeComplete", progress.finish);
 Router.events.on("routeChangeError", progress.finish);
 
-export default function MyApp({ Component, pageProps }) {
+export default function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   return (
-    <main className={poppins.className}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </main>
+    <SessionProvider session={session}>
+      <main className={poppins.className}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </main>
+    </SessionProvider>
   );
 }

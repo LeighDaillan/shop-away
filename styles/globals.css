@@ -9,7 +9,7 @@
 .hideAnimation {
   opacity: 0;
   filter: blur(5px);
-  transform: translateX(-10%);
+  transform: translateX(20%);
   transition: all 1s;
 }
 .showAnimation {

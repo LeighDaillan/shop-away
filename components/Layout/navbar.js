@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
+import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
+import { BiLogIn, BiLogOut } from "react-icons/bi";
 
 const Navbar = function () {
   const [active, setActive] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   const navHandler = function () {
     return setActive(!active);
@@ -52,18 +56,33 @@ const Navbar = function () {
               href="/"
               className="flex gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
             >
-              <AiOutlineShoppingCart size={25} />
+              <div className="relative mr-1">
+                <sup className="bg-black left-5 absolute text-xs text-white rounded-full px-1.5 py-0.5 ">
+                  0
+                </sup>
+                <AiOutlineShoppingCart size={30} />
+              </div>
               Your Cart
             </Link>
           </li>
           <li className="self-center text-lg">
-            <Link
-              href="/"
-              className="flex gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
-            >
-              <BsPersonCircle size={25} />
-              <span>Login</span>
-            </Link>
+            {!session ? (
+              <Link
+                href="/login"
+                className="flex gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
+              >
+                <BiLogIn size={25} />
+                <span>Login</span>
+              </Link>
+            ) : (
+              <div
+                onClick={() => signOut()}
+                className="flex cursor-pointer gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
+              >
+                <BiLogOut size={25} />
+                <span className="self-center">Log Out</span>
+              </div>
+            )}
           </li>
         </ul>
 
@@ -91,18 +110,33 @@ const Navbar = function () {
                   href="/"
                   className="flex gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
                 >
-                  <AiOutlineShoppingCart size={25} />
+                  <div className="relative mr-1">
+                    <sup className="bg-black left-5 absolute text-xs text-white rounded-full px-1.5 py-0.5 ">
+                      0
+                    </sup>
+                    <AiOutlineShoppingCart size={30} />
+                  </div>
                   Your Cart
                 </Link>
               </li>
               <li className="self-center text-lg">
-                <Link
-                  href="/"
-                  className="flex gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
-                >
-                  <BsPersonCircle size={25} />
-                  <span>Login</span>
-                </Link>
+                {!session ? (
+                  <Link
+                    href="/login"
+                    className="flex gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
+                  >
+                    <BiLogIn size={25} />
+                    <span>Login</span>
+                  </Link>
+                ) : (
+                  <div
+                    onClick={() => signOut()}
+                    className="flex cursor-pointer gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
+                  >
+                    <BiLogOut size={25} />
+                    <span className="self-center">Log Out</span>
+                  </div>
+                )}
               </li>
             </ul>
           </div>
