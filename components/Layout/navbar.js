@@ -1,17 +1,16 @@
 import Link from "next/link";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { BsPersonCircle } from "react-icons/bs";
-import Image from "next/image";
 import { FiMenu } from "react-icons/fi";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
+import { ProductContext } from "../ProductContextProvider";
 
 const Navbar = function () {
   const [active, setActive] = useState(false);
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { cartTotal, session } = useContext(ProductContext);
 
   const navHandler = function () {
     return setActive(!active);
@@ -53,12 +52,12 @@ const Navbar = function () {
         <ul className="hidden lg:flex gap-5">
           <li className="self-center text-lg">
             <Link
-              href="/"
+              href="/Cart"
               className="flex gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
             >
               <div className="relative mr-1">
                 <sup className="bg-black left-5 absolute text-xs text-white rounded-full px-1.5 py-0.5 ">
-                  0
+                  {cartTotal}
                 </sup>
                 <AiOutlineShoppingCart size={30} />
               </div>
@@ -107,12 +106,12 @@ const Navbar = function () {
             <ul className="block lg:hidden w-40 ">
               <li className="self-center text-lg">
                 <Link
-                  href="/"
+                  href="/Cart"
                   className="flex gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
                 >
                   <div className="relative mr-1">
                     <sup className="bg-black left-5 absolute text-xs text-white rounded-full px-1.5 py-0.5 ">
-                      0
+                      {cartTotal}
                     </sup>
                     <AiOutlineShoppingCart size={30} />
                   </div>
