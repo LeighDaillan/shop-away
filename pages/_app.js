@@ -2,6 +2,7 @@ import Router from "next/router";
 import { Poppins } from "@next/font/google";
 import ProgressBar from "@badrap/bar-of-progress";
 import { SessionProvider } from "next-auth/react";
+import ProductProvider from "@/components/ProductContextProvider";
 import "@/styles/globals.css";
 import Layout from "../components/Layout/layout";
 
@@ -23,11 +24,13 @@ export default function MyApp({
 }) {
   return (
     <SessionProvider session={session}>
-      <main className={poppins.className}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </main>
+      <ProductProvider>
+        <main className={poppins.className}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </main>
+      </ProductProvider>
     </SessionProvider>
   );
 }
