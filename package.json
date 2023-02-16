@@ -12,6 +12,7 @@
     "@badrap/bar-of-progress": "^0.2.2",
     "@emailjs/browser": "^3.10.0",
     "@next/font": "13.1.6",
+    "firebase": "^9.17.1",
     "next": "13.1.6",
     "next-auth": "^4.19.2",
     "react": "18.2.0",
