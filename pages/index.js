@@ -1,16 +1,18 @@
 import ProductCard from "@/components/ProductCard";
-import { useSession } from "next-auth/react";
 import { RxCross2 } from "react-icons/rx";
 import { useInView } from "react-intersection-observer";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { ProductContext } from "@/components/ProductContextProvider";
 
 const Home = function ({ products }) {
   const { ref: welcomeRef, inView: welcomeVisible } = useInView();
-  const { data: session } = useSession();
   const [welcomeStatus, setWelcomeStatus] = useState();
+  const { cartNumber, session } = useContext(ProductContext);
   useEffect(() => {
     if (!session) {
       setWelcomeStatus(true);
+    } else {
+      cartNumber();
     }
   }, [session]);
 
