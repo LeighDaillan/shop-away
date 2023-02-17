@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FiMenu } from "react-icons/fi";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
@@ -10,7 +10,13 @@ import { ProductContext } from "../ProductContextProvider";
 const Navbar = function () {
   const [active, setActive] = useState(false);
   const router = useRouter();
-  const { cartTotal, session } = useContext(ProductContext);
+  const {
+    session,
+    setProductCount,
+    productCount,
+    productCart,
+    setProductSubTotal,
+  } = useContext(ProductContext);
 
   const navHandler = function () {
     return setActive(!active);
@@ -57,7 +63,7 @@ const Navbar = function () {
             >
               <div className="relative mr-1">
                 <sup className="bg-black left-5 absolute text-xs text-white rounded-full px-1.5 py-0.5 ">
-                  {cartTotal}
+                  {productCount}
                 </sup>
                 <AiOutlineShoppingCart size={30} />
               </div>
@@ -111,7 +117,7 @@ const Navbar = function () {
                 >
                   <div className="relative mr-1">
                     <sup className="bg-black left-5 absolute text-xs text-white rounded-full px-1.5 py-0.5 ">
-                      {cartTotal}
+                      {productCount}
                     </sup>
                     <AiOutlineShoppingCart size={30} />
                   </div>

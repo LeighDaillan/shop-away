@@ -12,8 +12,6 @@ const Home = function ({ products }) {
   useEffect(() => {
     if (!session) {
       setWelcomeStatus(true);
-    } else {
-      cartNumber();
     }
   }, [session]);
 

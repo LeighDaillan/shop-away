@@ -13,7 +13,7 @@ const ProductCard = function ({ products }) {
     return rate;
   };
 
-  const { cartNumber, session, addToCart } = useContext(ProductContext);
+  const { session, addToCart } = useContext(ProductContext);
 
   return (
     <>

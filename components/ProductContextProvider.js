@@ -15,17 +15,17 @@ export const ProductContext = createContext();
 
 const ProductProvider = function (props) {
   const { data: session } = useSession();
-  const [cartTotal, setCartTotal] = useState("0");
   const [productCart, setProductCart] = useState([]);
+  const [productCount, setProductCount] = useState();
+  const [productSubTotal, setProductSubTotal] = useState("00.00");
 
-  const cartNumber = async function () {
+  const fetchProductCart = async function () {
     if (!session) return;
 
     const usersCollectionRef = collection(database, session?.user?.email);
     const q = query(usersCollectionRef, where("status", "==", "cart"));
 
     const querySnapshot = await getDocs(q);
-    setCartTotal(querySnapshot.docs.map((doc) => doc.data()).length);
     setProductCart(
       querySnapshot.docs.map((doc) => {
         return { ...doc.data(), firebase_id: doc.id };
@@ -39,16 +39,10 @@ const ProductProvider = function (props) {
     if (!session) return;
 
     const isInCart = productCart.find((cartData) => cartData.id === data.id);
-
     // If is in cart and no qty
     if (isInCart && !("qty" in data)) {
       const cartRef = doc(database, session.user.email, isInCart.firebase_id);
-      await updateDoc(cartRef, { ...isInCart, qty: +isInCart.qty + 1 }).then(
-        () => {
-          cartNumber();
-          alert("Added to your cart");
-        }
-      );
+      await updateDoc(cartRef, { ...isInCart, qty: +isInCart.qty + 1 });
 
       // If is in cart and with qty
     } else if (isInCart && "qty" in data) {
@@ -56,33 +50,39 @@ const ProductProvider = function (props) {
       await updateDoc(cartRef, {
         ...isInCart,
         qty: +isInCart.qty + +data.qty,
-      }).then(() => {
-        cartNumber();
-        alert("Added to your cart");
       });
 
       // If not in cart and with qty
     } else if (!isInCart && "qty" in data) {
       const cartRef = collection(database, session.user.email);
       const dataCart = { ...data, status: "cart" };
-      const document = await addDoc(cartRef, dataCart).then(() => {
-        cartNumber();
-        alert("Added to your cart");
-      });
+      const document = await addDoc(cartRef, dataCart);
+
       // if not in cart and no qty
     } else {
       const cartRef = collection(database, session.user.email);
       const dataCart = { ...data, status: "cart", qty: 1 };
-      const document = await addDoc(cartRef, dataCart).then(() => {
-        cartNumber();
-        alert("Added to your cart");
-      });
+      const document = await addDoc(cartRef, dataCart);
     }
+    fetchProductCart();
+    alert("Added to your cart");
+    setTimeout(() => {
+      console.log(productCart);
+    }, 3000);
   };
 
   return (
     <ProductContext.Provider
-      value={{ cartTotal, cartNumber, session, productCart, addToCart }}
+      value={{
+        fetchProductCart,
+        session,
+        productCart,
+        addToCart,
+        productCount,
+        setProductCount,
+        setProductSubTotal,
+        productSubTotal,
+      }}
     >
       {props.children}
     </ProductContext.Provider>

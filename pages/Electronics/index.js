@@ -7,11 +7,6 @@ const Electronics = function ({ products }) {
   const { ref: sectionRef, inView: sectionVisible } = useInView();
   const { cartNumber, session } = useContext(ProductContext);
 
-  useEffect(() => {
-    if (session) {
-      cartNumber();
-    }
-  }, [session]);
   return (
     <>
       <div className="text-center mt-20">

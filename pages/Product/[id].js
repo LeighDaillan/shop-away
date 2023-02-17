@@ -4,13 +4,7 @@ import { ProductContext } from "@/components/ProductContextProvider";
 
 const Product = function ({ product }) {
   const [qty, setQty] = useState(1);
-  const { session, addToCart, cartNumber } = useContext(ProductContext);
-
-  useEffect(() => {
-    if (session) {
-      cartNumber();
-    }
-  }, [session]);
+  const { session, addToCart } = useContext(ProductContext);
 
   const ratings = function (rating) {
     let rate = [];
