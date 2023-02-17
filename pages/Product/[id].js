@@ -1,10 +1,16 @@
 import Image from "next/image";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { ProductContext } from "@/components/ProductContextProvider";
 
 const Product = function ({ product }) {
   const [qty, setQty] = useState(1);
-  const { session, addToCart } = useContext(ProductContext);
+  const { session, addToCart, cartNumber } = useContext(ProductContext);
+
+  useEffect(() => {
+    if (session) {
+      cartNumber();
+    }
+  }, [session]);
 
   const ratings = function (rating) {
     let rate = [];

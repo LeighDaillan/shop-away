@@ -1,8 +1,17 @@
 import { useInView } from "react-intersection-observer";
 import ProductCard from "@/components/ProductCard";
+import { useEffect, useContext } from "react";
+import { ProductContext } from "@/components/ProductContextProvider";
 
 const WomensClothing = function ({ products }) {
   const { ref: sectionRef, inView: sectionVisible } = useInView();
+  const { cartNumber, session } = useContext(ProductContext);
+
+  useEffect(() => {
+    if (session) {
+      cartNumber();
+    }
+  }, [session]);
   return (
     <>
       <div className="text-center mt-20">

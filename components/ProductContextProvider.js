@@ -19,7 +19,9 @@ const ProductProvider = function (props) {
   const [productCart, setProductCart] = useState([]);
 
   const cartNumber = async function () {
-    const usersCollectionRef = collection(database, session.user.email);
+    if (!session) return;
+
+    const usersCollectionRef = collection(database, session?.user?.email);
     const q = query(usersCollectionRef, where("status", "==", "cart"));
 
     const querySnapshot = await getDocs(q);
