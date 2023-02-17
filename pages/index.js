@@ -6,6 +6,7 @@ import { ProductContext } from "@/components/ProductContextProvider";
 
 const Home = function ({ products }) {
   const { ref: welcomeRef, inView: welcomeVisible } = useInView();
+  const { ref: sectionRef, inView: sectionVisible } = useInView();
   const [welcomeStatus, setWelcomeStatus] = useState();
   const { cartNumber, session } = useContext(ProductContext);
   useEffect(() => {
@@ -22,7 +23,7 @@ const Home = function ({ products }) {
       {session && welcomeStatus && (
         <div
           ref={welcomeRef}
-          className={`fixed text-sm bg-black rounded-l-sm bottom-10 right-0 text-white px-4 py-3 ${
+          className={`fixed text-sm z-10 bg-black rounded-l-sm bottom-10 right-0 text-white px-4 py-3 ${
             welcomeVisible
               ? "showAnimation ease-in duration-500"
               : "hideAnimation blur"
@@ -40,7 +41,14 @@ const Home = function ({ products }) {
           </div>
         </div>
       )}
-      <section className="mx-10 md:mx-20 my-14 md:my-32">
+      <section
+        ref={sectionRef}
+        className={`mx-10 md:mx-20 my-14 md:my-32 ${
+          sectionVisible
+            ? "opacity-100 ease-in duration-500 translate-y-0"
+            : "opacity-0 translate-y-10 blur"
+        }`}
+      >
         {/* Grid of Cards */}
         <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-20 p-5 `}>
           {/* cards */}
