@@ -8,51 +8,15 @@ import { HiOutlineTrash } from "react-icons/hi";
 const Cart = function () {
   const {
     productCart,
-    cartNumber,
+    fetchProductCart,
     session,
     productCount,
     productSubTotal,
     setProductCount,
     setProductSubTotal,
+    removeProduct,
+    notif,
   } = useContext(ProductContext);
-  const [notif, setNotif] = useState(false);
-
-  useEffect(() => {
-    if (productCart.length !== 0) {
-      setProductCount(
-        productCart
-          ?.map((product) => product.qty)
-          ?.reduce((preVal, curVal) => preVal + curVal)
-      );
-
-      setProductSubTotal(
-        productCart
-          ?.map((product) => product.qty * product.price)
-          ?.reduce((preVal, curVal) => preVal + curVal)
-          .toFixed(2)
-      );
-    }
-  }, [productCart]);
-
-  const showNotif = function () {
-    setNotif(true);
-
-    setTimeout(() => {
-      setNotif(false);
-    }, 1000);
-  };
-  console.log("Product", productCart);
-
-  const removeProduct = async function (data) {
-    const productRef = doc(database, session.user.email, data.firebase_id);
-    if (data.qty > 1) {
-      await updateDoc(productRef, { ...data, qty: +data.qty - 1 });
-    } else {
-      await deleteDoc(productRef);
-    }
-
-    showNotif();
-  };
 
   const shortDescription = function (description) {
     const maxLength = 150;
@@ -114,7 +78,7 @@ const Cart = function () {
             );
           })}
         </section>
-        <section className="">
+        <section className="mt-5">
           <div className="grid grid-cols-2">
             <h1 className="opacity-70">Order Items:</h1>
             <p className="justify-self-end text-sm">{productCount}</p>

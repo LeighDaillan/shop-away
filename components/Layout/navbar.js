@@ -18,6 +18,27 @@ const Navbar = function () {
     setProductSubTotal,
   } = useContext(ProductContext);
 
+  useEffect(() => {
+    console.log("ProductCart Length", productCart.length);
+    if (productCart.length !== 0) {
+      setProductCount(
+        productCart
+          ?.map((product) => product.qty)
+          ?.reduce((preVal, curVal) => preVal + curVal)
+      );
+
+      setProductSubTotal(
+        productCart
+          ?.map((product) => product.qty * product.price)
+          ?.reduce((preVal, curVal) => preVal + curVal)
+          .toFixed(2)
+      );
+    } else {
+      setProductCount(0);
+      setProductSubTotal("00.00");
+    }
+  }, [productCart]);
+
   const navHandler = function () {
     return setActive(!active);
   };
