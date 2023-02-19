@@ -16,6 +16,7 @@ const Navbar = function () {
     productCount,
     productCart,
     setProductSubTotal,
+    fetchProductCart,
   } = useContext(ProductContext);
 
   useEffect(() => {
@@ -38,6 +39,10 @@ const Navbar = function () {
       setProductSubTotal("00.00");
     }
   }, [productCart]);
+
+  useEffect(() => {
+    fetchProductCart();
+  }, [session]);
 
   const navHandler = function () {
     return setActive(!active);
