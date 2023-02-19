@@ -2,6 +2,7 @@ import Router from "next/router";
 import { Poppins } from "@next/font/google";
 import ProgressBar from "@badrap/bar-of-progress";
 import { SessionProvider } from "next-auth/react";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import ProductProvider from "@/components/ProductContextProvider";
 import "@/styles/globals.css";
 import Layout from "../components/Layout/layout";
@@ -23,14 +24,18 @@ export default function MyApp({
   pageProps: { session, ...pageProps },
 }) {
   return (
-    <SessionProvider session={session}>
-      <ProductProvider>
-        <main className={poppins.className}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </main>
-      </ProductProvider>
-    </SessionProvider>
+    <PayPalScriptProvider
+      options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}
+    >
+      <SessionProvider session={session}>
+        <ProductProvider>
+          <main className={poppins.className}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </main>
+        </ProductProvider>
+      </SessionProvider>
+    </PayPalScriptProvider>
   );
 }
