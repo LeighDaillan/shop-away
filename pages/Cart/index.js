@@ -1,32 +1,43 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "@/components/ProductContextProvider";
 import Image from "next/image";
-import { updateDoc, doc, deleteDoc } from "firebase/firestore";
-import { database } from "@/firebaseConfig";
+import PaypalCheckoutButton from "@/components/PaypalCheckoutButton";
 import { HiOutlineTrash } from "react-icons/hi";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
+import { useInView } from "react-intersection-observer";
+
+const stripePromise = loadStripe(process.env.stripe_public_key);
 
 const Cart = function () {
   const {
     productCart,
-    fetchProductCart,
     session,
     productCount,
     productSubTotal,
-    setProductCount,
-    setProductSubTotal,
     removeProduct,
     notif,
   } = useContext(ProductContext);
+  const { ref: checkoutRef, inView: checkoutVisible } = useInView();
 
-  const shortDescription = function (description) {
-    const maxLength = 150;
+  const createCheckoutSession = async function () {
+    // guard clause
+    if (productCount === 0) return;
 
-    let trimmedString = description.substr(0, maxLength);
+    const stripe = await stripePromise;
 
-    return (trimmedString = trimmedString.substr(
-      0,
-      Math.min(trimmedString.length, trimmedString.lastIndexOf(" "))
-    ));
+    const checkoutSession = await axios.post("/api/create-checkout-session", {
+      items: productCart,
+      email: session.user.email,
+    });
+
+    // Redirect user/customer to stripe checkout
+    const result = await stripe.redirectToCheckout({
+      sessionId: checkoutSession.data.id,
+    });
+
+    // alert if have error
+    if (result.error) alert(result.error.message);
   };
 
   return (
@@ -78,8 +89,15 @@ const Cart = function () {
             );
           })}
         </section>
-        <section className="mt-5">
-          <div className="grid grid-cols-2">
+        <section className={`mt-5 `}>
+          <div ref={checkoutRef}></div>
+          <div
+            className={`grid grid-cols-2 ${
+              !checkoutVisible
+                ? "lg:fixed lg:top-0 lg:mx-10 lg:my-5 lg:border-2 lg:rounded-sm lg:bg-white p-5"
+                : ""
+            }`}
+          >
             <h1 className="opacity-70">Order Items:</h1>
             <p className="justify-self-end text-sm">{productCount}</p>
             <h1 className="opacity-70">Order Value:</h1>
@@ -89,7 +107,11 @@ const Cart = function () {
             <p className="border-b-2 border-black col-span-2 my-2"></p>
             <h3 className="font-bold">Total</h3>
             <p className="justify-self-end font-bold">$ {productSubTotal}</p>
-            <button className="col-span-2 bg-black text-white py-3 my-7">
+            <button
+              onClick={createCheckoutSession}
+              role="link"
+              className="col-span-2 bg-black text-white py-3 my-7"
+            >
               Continue to checkout
             </button>
             <p className="col-span-2 opacity-70 text-xs tracking-wider">
