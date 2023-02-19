@@ -24,6 +24,8 @@ const ProductProvider = function (props) {
   const fetchProductCart = async function () {
     if (!session) return;
 
+    console.log("Fetching product");
+
     const usersCollectionRef = collection(database, session?.user?.email);
     const q = query(usersCollectionRef, where("status", "==", "cart"));
 
@@ -95,7 +97,7 @@ const ProductProvider = function (props) {
         fetchProductCart();
       });
     }
-
+    fetchProductCart();
     alert("Added to your cart");
   };
 
@@ -111,6 +113,7 @@ const ProductProvider = function (props) {
         setProductSubTotal,
         productSubTotal,
         removeProduct,
+        notif,
       }}
     >
       {props.children}
