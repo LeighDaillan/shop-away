@@ -18,10 +18,11 @@ const Navbar = function () {
     productCart,
     setProductSubTotal,
     fetchProductCart,
+    fetchProductPurchased,
+    updateCart,
   } = useContext(ProductContext);
 
   useEffect(() => {
-    console.log("ProductCart Length", productCart.length);
     if (productCart.length !== 0) {
       setProductCount(
         productCart

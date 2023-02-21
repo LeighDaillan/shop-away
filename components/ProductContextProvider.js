@@ -38,6 +38,13 @@ const ProductProvider = function (props) {
     );
   };
 
+  const updateCart = function () {
+    productCart.map(async (data) => {
+      const productRef = doc(database, session.user.email, data.firebase_id);
+      await updateDoc(productRef, { ...data, status: "purchased" });
+    });
+  };
+
   const fetchProductPurchased = async function () {
     if (!session) return;
 
@@ -133,6 +140,7 @@ const ProductProvider = function (props) {
         notif,
         purchasedProduct,
         fetchProductPurchased,
+        updateCart,
       }}
     >
       {props.children}

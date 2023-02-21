@@ -3,7 +3,7 @@ import { ProductContext } from "@/components/ProductContextProvider";
 import Image from "next/image";
 
 const Account = function () {
-  const { fetchProductPurchased, purchasedProduct, session } =
+  const { fetchProductPurchased, purchasedProduct, session, updateCart } =
     useContext(ProductContext);
 
   useEffect(() => {

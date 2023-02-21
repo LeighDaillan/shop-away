@@ -5,15 +5,18 @@ import { updateDoc, doc } from "firebase/firestore";
 import { database } from "@/firebaseConfig";
 
 const Success = function () {
-  const { productCart, session, fetchProductCart, fetchProductPurchased } =
-    useContext(ProductContext);
+  const {
+    productCart,
+    session,
+    fetchProductCart,
+    fetchProductPurchased,
+    updateCart,
+    purchasedProduct,
+  } = useContext(ProductContext);
 
   useEffect(() => {
     if (!session) return;
-    productCart.map(async (data) => {
-      const productRef = doc(database, session.user.email, data.firebase_id);
-      await updateDoc(productRef, { ...data, status: "purchased" });
-    });
+    updateCart();
     fetchProductCart();
     fetchProductPurchased();
   }, [session]);
