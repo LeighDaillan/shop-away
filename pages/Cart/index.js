@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { ProductContext } from "@/components/ProductContextProvider";
 import Image from "next/image";
-import PaypalCheckoutButton from "@/components/PaypalCheckoutButton";
 import { HiOutlineTrash } from "react-icons/hi";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";

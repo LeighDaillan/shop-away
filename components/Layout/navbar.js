@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
 import { ProductContext } from "../ProductContextProvider";
+import { RiAccountCircleLine } from "react-icons/ri";
 
 const Navbar = function () {
   const [active, setActive] = useState(false);
@@ -97,6 +98,15 @@ const Navbar = function () {
             </Link>
           </li>
           <li className="self-center text-lg">
+            <Link
+              href="/Account"
+              className="flex  gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
+            >
+              <RiAccountCircleLine className="self-center" size={25} />
+              <span>My Account</span>
+            </Link>
+          </li>
+          <li className="self-center text-lg">
             {!session ? (
               <Link
                 href="/login"
@@ -148,6 +158,15 @@ const Navbar = function () {
                     <AiOutlineShoppingCart size={30} />
                   </div>
                   Your Cart
+                </Link>
+              </li>
+              <li className="self-center text-lg">
+                <Link
+                  href="/Account"
+                  className="flex  gap-2 py-1 hover:border-b-2 hover:border-black ease-in duration-100"
+                >
+                  <RiAccountCircleLine className="self-center" size={25} />
+                  <span>My Account</span>
                 </Link>
               </li>
               <li className="self-center text-lg">

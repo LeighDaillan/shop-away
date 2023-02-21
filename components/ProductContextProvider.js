@@ -17,6 +17,7 @@ export const ProductContext = createContext();
 const ProductProvider = function (props) {
   const { data: session } = useSession();
   const [productCart, setProductCart] = useState([]);
+  const [purchasedProduct, setPurchasedProduct] = useState([]);
   const [productCount, setProductCount] = useState(0);
   const [productSubTotal, setProductSubTotal] = useState("00.00");
   const [notif, setNotif] = useState(false);
@@ -33,6 +34,22 @@ const ProductProvider = function (props) {
     setProductCart(
       querySnapshot.docs.map((doc) => {
         return { ...doc.data(), firebase_id: doc.id };
+      })
+    );
+  };
+
+  const fetchProductPurchased = async function () {
+    if (!session) return;
+
+    console.log("Fetching product Purchased");
+
+    const usersCollectionRef = collection(database, session?.user?.email);
+    const q = query(usersCollectionRef, where("status", "==", "purchased"));
+
+    const querySnapshot = await getDocs(q);
+    setPurchasedProduct(
+      querySnapshot.docs.map((doc) => {
+        return { ...doc.data() };
       })
     );
   };
@@ -114,6 +131,8 @@ const ProductProvider = function (props) {
         productSubTotal,
         removeProduct,
         notif,
+        purchasedProduct,
+        fetchProductPurchased,
       }}
     >
       {props.children}
