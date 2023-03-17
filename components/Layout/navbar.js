@@ -7,6 +7,7 @@ import { signOut } from "next-auth/react";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
 import { ProductContext } from "../ProductContextProvider";
 import { RiAccountCircleLine } from "react-icons/ri";
+import { Toaster } from "react-hot-toast";
 
 const Navbar = function () {
   const [active, setActive] = useState(false);
@@ -52,6 +53,7 @@ const Navbar = function () {
 
   return (
     <header className="">
+      <Toaster />
       <div className="bg-neutral-900 p-2">
         <p className="hidden sm:block text-white text-sm opacity-90">
           Caution: Nothing on this website is for sale. It is for educational

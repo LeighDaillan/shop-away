@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import { database } from "@/firebaseConfig";
+import toast, { Toaster } from "react-hot-toast";
 
 export const ProductContext = createContext();
 
@@ -77,7 +78,7 @@ const ProductProvider = function (props) {
       await deleteDoc(productRef);
     }
     fetchProductCart();
-    showNotif();
+    toast.error("Remove item from cart");
   };
 
   // Add To Cart Handler
@@ -122,7 +123,7 @@ const ProductProvider = function (props) {
       });
     }
     fetchProductCart();
-    alert("Added to your cart");
+    toast.success("Added to cart!");
   };
 
   return (
