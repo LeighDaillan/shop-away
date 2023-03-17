@@ -2,6 +2,7 @@ import { useInView } from "react-intersection-observer";
 import ProductCard from "@/components/ProductCard";
 import { useEffect, useContext } from "react";
 import { ProductContext } from "@/components/ProductContextProvider";
+import Head from "next/head";
 
 const WomensClothing = function ({ products }) {
   const { ref: sectionRef, inView: sectionVisible } = useInView();
@@ -9,6 +10,10 @@ const WomensClothing = function ({ products }) {
 
   return (
     <>
+      <Head>
+        <title>Arcane | Women's Clothing</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="text-center mt-20">
         <h1 className="text-4xl font-bold mb-5">Women's Clothing</h1>
         <p className="max-w-4xl mx-10 md:mx-auto leading-7">

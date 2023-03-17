@@ -11,7 +11,7 @@ const Login = function () {
   return (
     <>
       <Head>
-        <title>Sign In</title>
+        <title>Arcane | Sign In</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <main className="bg-slate-100 h-screen pt-20">

@@ -22,50 +22,57 @@ const Product = function ({ product }) {
   };
 
   return (
-    <main className=" grid md:grid-cols-2  gap-5 lg:mx-32  my-10 p-10">
-      <section className=" text-center">
-        <div className="p-7 border-2  rounded-md">
-          <Image
-            src={product.image}
-            width={300}
-            height={300}
-            alt="Product Photo"
-            className="mx-auto  overflow-auto"
-          />
-        </div>
-        <p className="my-5 font-semibold">{product.description}.</p>
-      </section>
+    <>
+      <Head>
+        <title>Arcane | Product</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
 
-      <section className="bg-white p-9">
-        <p className="text-right italic opacity-80 mb-4">
-          {product.category.toUpperCase()}
-        </p>
-        <h1 className="text-3xl">{product.title}</h1>
-        <h2 className="my-2">ID: {product.id}</h2>
-        <h2 className="my-3 text-xl font-bold">$ {product.price}</h2>
-        <h2 className="mb-5 text-base">
-          Reviews ({product.rating.count}){" "}
-          {ratings(product.rating.rate.toString())}
-        </h2>
-        <div className="my-5">
-          <h3 className="text-lg">Quantity</h3>
-          <input
-            value={qty}
-            onChange={(e) => setQty(e.target.value)}
-            className="border-2 w-20 px-2 py-1"
-            type="number"
-            min="1"
-          />
-        </div>
-        <button
-          onClick={() => addToCartWithQty(product)}
-          className="border-black border-2 py-3 rounded-md hover:bg-black hover:text-white ease-in duration-200 w-full"
-        >
-          {session ? "Add to cart" : "Log in to continue"}
-        </button>
-        <h2></h2>
-      </section>
-    </main>
+      <main className=" grid md:grid-cols-2  gap-5 lg:mx-32  my-10 p-10">
+        <section className=" text-center">
+          <div className="p-7 border-2  rounded-md">
+            <Image
+              src={product.image}
+              width={300}
+              height={300}
+              alt="Product Photo"
+              className="mx-auto  overflow-auto"
+            />
+          </div>
+          <p className="my-5 font-semibold">{product.description}.</p>
+        </section>
+
+        <section className="bg-white p-9">
+          <p className="text-right italic opacity-80 mb-4">
+            {product.category.toUpperCase()}
+          </p>
+          <h1 className="text-3xl">{product.title}</h1>
+          <h2 className="my-2">ID: {product.id}</h2>
+          <h2 className="my-3 text-xl font-bold">$ {product.price}</h2>
+          <h2 className="mb-5 text-base">
+            Reviews ({product.rating.count}){" "}
+            {ratings(product.rating.rate.toString())}
+          </h2>
+          <div className="my-5">
+            <h3 className="text-lg">Quantity</h3>
+            <input
+              value={qty}
+              onChange={(e) => setQty(e.target.value)}
+              className="border-2 w-20 px-2 py-1"
+              type="number"
+              min="1"
+            />
+          </div>
+          <button
+            onClick={() => addToCartWithQty(product)}
+            className="border-black border-2 py-3 rounded-md hover:bg-black hover:text-white ease-in duration-200 w-full"
+          >
+            {session ? "Add to cart" : "Log in to continue"}
+          </button>
+          <h2></h2>
+        </section>
+      </main>
+    </>
   );
 };
 

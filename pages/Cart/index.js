@@ -5,18 +5,13 @@ import { HiOutlineTrash } from "react-icons/hi";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { useInView } from "react-intersection-observer";
+import Head from "next/head";
 
 const stripePromise = loadStripe(process.env.stripe_public_key);
 
 const Cart = function () {
-  const {
-    productCart,
-    session,
-    productCount,
-    productSubTotal,
-    removeProduct,
-    notif,
-  } = useContext(ProductContext);
+  const { productCart, session, productCount, productSubTotal, removeProduct } =
+    useContext(ProductContext);
   const { ref: checkoutRef, inView: checkoutVisible } = useInView();
 
   const createCheckoutSession = async function () {
@@ -41,12 +36,10 @@ const Cart = function () {
 
   return (
     <>
-      {/* Remove Item Banner */}
-      {notif && (
-        <div className={`bg-green-600 text-center rounded-b-md  w-48 mx-auto `}>
-          <span className="text-white">Remove item</span>
-        </div>
-      )}
+      <Head>
+        <title>Arcane | Your Cart</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <main className="lg:grid lg:grid-cols-3 p-5 md:p-20 gap-5">
         <section className="md:col-span-2 ">
           {productCart.map((product) => {
